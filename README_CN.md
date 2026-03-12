@@ -254,7 +254,11 @@ Skills 就是普通的 Markdown 文件，fork 后随意改：
 
 行内覆盖：`/research-lit "方向" — paper library: ~/Zotero/storage/`
 
-### 通用
+### 通用（所有使用 Codex MCP 的 skill）
+
+| 常量 | 默认值 | 说明 |
+|------|--------|------|
+| `REVIEWER_MODEL` | `gpt-5.4` | Codex MCP 调用的 OpenAI 模型。可选：`gpt-5.4`、`o3`、`gpt-4o` 等 |
 
 - **Prompt 模板** — 定制评审人格和评估标准
 - **`allowed-tools`** — 限制或扩展每个 skill 可用的工具

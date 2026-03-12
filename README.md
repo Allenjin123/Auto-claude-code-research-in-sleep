@@ -307,7 +307,11 @@ Override inline: `/idea-discovery "topic" — pilot budget: 4h per idea, wait fo
 
 Override inline: `/research-lit "topic" — paper library: ~/Zotero/storage/`
 
-### General
+### General (all skills using Codex MCP)
+
+| Constant | Default | Description |
+|----------|---------|-------------|
+| `REVIEWER_MODEL` | `gpt-5.4` | OpenAI model used via Codex MCP. Options: `gpt-5.4`, `o3`, `gpt-4o`, etc. |
 
 - **Prompt templates** — tailor the review persona and evaluation criteria
 - **`allowed-tools`** — restrict or expand what each skill can do
