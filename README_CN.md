@@ -168,11 +168,11 @@ claude
 
 📝 **博客：** [梦中科研全流程开源](http://xhslink.com/o/2iV33fYoc7Q)
 
-### 工作流 1：文献调研与找 Idea 🔍
+### 工作流 1：Idea 发现与方案精炼 🔍
 
-> "这个领域最新进展是什么？哪里有 gap？"
+> "这个领域最新进展是什么？哪里有 gap？怎么解决？"
 
-还没有具体 idea？给一个研究方向就行——`/idea-creator` 搞定剩下的：
+还没有具体 idea？给一个研究方向就行——`/idea-discovery` 搞定剩下的：
 
 1. 📚 **调研**全景（最新论文、开放问题、反复出现的局限性）
 2. 🧠 **头脑风暴** 8-12 个具体 idea（GPT-5.4 xhigh）
@@ -180,8 +180,10 @@ claude
 4. 🛡️ **深度验证** top idea（完整查新 + devil's advocate review）
 5. 🧪 **并行 pilot 实验**（top 2-3 个 idea 分别上不同 GPU，30 分钟 - 2 小时）
 6. 🏆 **按实验信号排序**——有正信号的 idea 排前面
+7. 🔬 **精炼方案**——冻结问题锚点，通过 GPT-5.4 迭代 review 打磨方法
+8. 🧪 **规划实验**——claim-driven 实验路线图，含 ablation、预算和执行顺序
 
-输出 `IDEA_REPORT.md`：含假设、pilot 结果、审稿人可能的质疑、建议执行顺序。失败的 idea 也记录在案，避免重复踩坑。
+输出 `IDEA_REPORT.md`（排名后的 idea）+ `refine-logs/FINAL_PROPOSAL.md`（精炼后的方案）+ `refine-logs/EXPERIMENT_PLAN.md`（实验路线图）。失败的 idea 也记录在案，避免重复踩坑。
 
 **涉及 Skills：** `research-lit` + `idea-creator` + `novelty-check` + `research-review` + `research-refine-pipeline`
 
@@ -195,12 +197,13 @@ claude
 1. /research-lit "discrete diffusion models"    ← Zotero→Obsidian→本地→网络，整理全景
    /research-lit "topic" — sources: zotero, web  ← 或指定只搜部分源
    /research-lit "topic" — arxiv download: true   ← 同时下载最相关的 arXiv PDF
-   /arxiv "attention mechanism" — download         ← 独立 arXiv 搜索+下载
 2. /idea-creator "DLLMs post training"     ← 自动生成 8-12 个 idea，筛选排序
 3. 选 top 2-3 个 idea
 4. /novelty-check "top idea"                     ← 查新：有没有人做过？
 5. /research-review "top idea"                   ← 让外部 LLM 批判你的想法
-6. 实现 → /run-experiment → /auto-review-loop    ← 闭环！
+6. /research-refine "top idea"                   ← 冻结问题锚点 + 精炼方法
+7. /experiment-plan                              ← claim-driven 实验路线图
+8. /run-experiment → /auto-review-loop           ← 闭环！
 ```
 
 📝 **博客：** [Claude Code 两月 NeurIPS 指北](http://xhslink.com/o/7IvAJQ41IBA)

@@ -168,11 +168,11 @@ These skills compose into a full research lifecycle. The three workflows can be 
 
 📝 **Blog post:** [梦中科研全流程开源](http://xhslink.com/o/2iV33fYoc7Q)
 
-### Workflow 1: Literature & Idea Discovery 🔍
+### Workflow 1: Idea Discovery & Method Refinement 🔍
 
-> **"What's the state of the art? Where are the gaps?"**
+> **"What's the state of the art? Where are the gaps? How do we solve it?"**
 
-Don't have a concrete idea yet? Just give a research direction — `/idea-creator` handles the rest:
+Don't have a concrete idea yet? Just give a research direction — `/idea-discovery` handles the rest:
 
 1. 📚 **Survey** the landscape (recent papers, open problems, recurring limitations)
 2. 🧠 **Brainstorm** 8-12 concrete ideas via GPT-5.4 xhigh
@@ -180,39 +180,61 @@ Don't have a concrete idea yet? Just give a research direction — `/idea-creato
 4. 🛡️ **Validate** top ideas with deep novelty check + devil's advocate review
 5. 🧪 **Pilot** top 2-3 ideas in parallel on different GPUs (30 min - 2 hr each)
 6. 🏆 **Rank** by empirical signal — ideas with positive pilot results rise to the top
+7. 🔬 **Refine** the top idea into a problem-anchored proposal via iterative GPT-5.4 review
+8. 🧪 **Plan** claim-driven experiments with ablations, budgets, and run order
 
-The output is a ranked `IDEA_REPORT.md` with hypotheses, pilot results, reviewer objections, and a suggested execution order. Ideas that fail are documented too, saving future dead-end exploration.
+The output is a ranked `IDEA_REPORT.md` plus a refined proposal (`refine-logs/FINAL_PROPOSAL.md`) and experiment plan (`refine-logs/EXPERIMENT_PLAN.md`) for the top idea. Dead-end ideas are documented too, saving future exploration.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                  Idea Discovery                              │
-│                                                              │
-│   /research-lit     /idea-creator     /novelty-check         │
-│   (find papers)     (brainstorm)      (verify novelty)       │
-│         │                │                  │                │
-│         ▼                ▼                  ▼                │
-│   ┌──────────┐     ┌──────────┐       ┌──────────┐         │
-│   │ Scan     │────▶│ Generate │──────▶│ Check if │         │
-│   │ local    │     │ 8-12     │       │ idea is  │         │
-│   │ papers + │     │ ideas    │       │ novel    │         │
-│   │ search   │     │ + rank   │       │          │         │
-│   └──────────┘     └──────────┘       └──────────┘         │
-│                          │                  │                │
-│                          ▼                  ▼                │
-│                    ┌──────────┐       ┌──────────┐         │
-│                    │ Filter   │──────▶│ External │         │
-│                    │ by cost, │       │ LLM      │         │
-│                    │ novelty  │       │ evaluates│         │
-│                    └──────────┘       └──────────┘         │
-│                                                              │
-│   Typical flow:                                              │
-│   1. /research-lit "discrete diffusion models"  (local → online) │
-│   2. /idea-creator "DLLMs post training"               │
-│   3. Review ranked ideas, pick top 2-3                       │
-│   4. /novelty-check "top idea" (deep verification)           │
-│   5. /research-review "top idea" (critical feedback)         │
-│   6. Implement → /run-experiment → /auto-review-loop         │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│              Idea Discovery & Method Refinement                  │
+│                                                                  │
+│   /research-lit    /idea-creator    /novelty-check               │
+│   (find papers)    (brainstorm)     (verify novelty)             │
+│         │               │                │                       │
+│         ▼               ▼                ▼                       │
+│   ┌──────────┐    ┌──────────┐     ┌──────────┐                │
+│   │ Scan     │───▶│ Generate │────▶│ Check if │                │
+│   │ local    │    │ 8-12     │     │ idea is  │                │
+│   │ papers + │    │ ideas    │     │ novel    │                │
+│   │ search   │    │ + rank   │     │          │                │
+│   └──────────┘    └──────────┘     └──────────┘                │
+│                         │                │                       │
+│                         ▼                ▼                       │
+│                   ┌──────────┐     ┌──────────┐                │
+│                   │ Filter   │────▶│ External │                │
+│                   │ by cost, │     │ LLM      │                │
+│                   │ novelty  │     │ evaluates│                │
+│                   └──────────┘     └──────────┘                │
+│                                          │                       │
+│                   /research-refine       ▼                       │
+│                   (refine method)   ┌──────────┐                │
+│                         │          │ Freeze   │                │
+│                         ▼          │ problem  │                │
+│                   ┌──────────┐     │ anchor + │                │
+│                   │ Iterate  │◀───▶│ refine   │                │
+│                   │ until    │     │ method   │                │
+│                   │ score≥9  │     └──────────┘                │
+│                   └──────────┘          │                       │
+│                         │               ▼                       │
+│                   /experiment-plan  ┌──────────┐                │
+│                         │          │ Claim-   │                │
+│                         ▼          │ driven   │                │
+│                   ┌──────────┐     │ experiment│               │
+│                   │ Plan     │────▶│ roadmap  │                │
+│                   │ runs     │     └──────────┘                │
+│                   └──────────┘                                  │
+│                                                                  │
+│   Typical flow:                                                  │
+│   1. /research-lit "discrete diffusion models"                   │
+│   2. /idea-creator "DLLMs post training"                         │
+│   3. Review ranked ideas, pick top 2-3                           │
+│   4. /novelty-check "top idea" (deep verification)               │
+│   5. /research-review "top idea" (critical feedback)             │
+│   6. /research-refine "top idea" (problem anchor + method)       │
+│   7. /experiment-plan (claim-driven roadmap)                     │
+│   8. /run-experiment → /auto-review-loop                         │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 **Skills involved:** `research-lit` + `idea-creator` + `novelty-check` + `research-review` + `research-refine-pipeline`
