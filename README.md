@@ -84,7 +84,7 @@ See [full setup guide](#%EF%B8%8F-setup) for details and [alternative model comb
 - 📝 **Paper writing** — narrative → outline → figures → LaTeX → PDF → auto-review (4/10 → 8.5/10), one command. Anti-hallucination citations via [DBLP](https://dblp.org)/[CrossRef](https://www.crossref.org)
 - 🤖 **Cross-model collaboration** — Claude Code executes, GPT-5.4 xhigh reviews. Adversarial, not self-play
 - 📝 **Peer review** — review others' papers as a conference reviewer, with structured scoring and meta-review
-- 🖥️ **GPU deployment** — auto rsync, screen sessions, multi-GPU parallel experiments, live monitoring
+- 🖥️ **Review-driven experiments** — when GPT-5.4 says "run an ablation", Claude Code automatically writes the script, rsyncs to your GPU server, launches in screen, collects results, and folds them back into the paper. Just configure your server in `CLAUDE.md` ([setup guide](#%EF%B8%8F-gpu-server-setup-for-auto-experiments))
 - 🔀 **Flexible models** — default Claude × GPT-5.4, also supports [GLM, MiniMax, Kimi, LongCat, DeepSeek, etc.](#-alternative-model-combinations) — no Claude or OpenAI API required
 - 🛑 **Human-in-the-loop** — configurable checkpoints at key decisions. `AUTO_PROCEED=true` for full autopilot, `false` to approve each step
 - 📱 **[Feishu/Lark notifications](#-feishulark-integration-optional)** — three modes: **off (default, strongly recommended for most users)**, push-only (webhook, mobile alerts), interactive (approve/reject from Feishu). Zero impact when unconfigured
@@ -222,6 +222,8 @@ The output is a ranked `IDEA_REPORT.md` with hypotheses, pilot results, reviewer
 ### Workflow 2: Auto Research Loop 🔁 (sleep & wake up to results)
 
 > **"Review my paper, fix what's wrong, repeat until it's good."**
+>
+> GPT-5.4 reviews → identifies weaknesses → suggests experiments → Claude Code writes scripts, deploys to GPU, monitors results, rewrites the paper — all while you sleep. Just add your [GPU server config](#%EF%B8%8F-gpu-server-setup-for-auto-experiments) to `CLAUDE.md`.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

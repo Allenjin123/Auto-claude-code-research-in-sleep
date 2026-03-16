@@ -84,7 +84,7 @@ claude
 - 📝 **论文写作** — 研究叙事 → 大纲 → 图表 → LaTeX → PDF → 自动审稿（4/10 → 8.5/10），一条命令。通过 [DBLP](https://dblp.org)/[CrossRef](https://www.crossref.org) 反幻觉引用
 - 🤖 **跨模型协作** — Claude Code 执行，GPT-5.4 xhigh 审稿。对抗式而非自我博弈
 - 📝 **Peer Review** — 以审稿人视角审阅他人论文，结构化打分 + meta-review
-- 🖥️ **GPU 部署** — 自动 rsync、screen 会话、多 GPU 并行实验、实时监控
+- 🖥️ **审稿驱动实验** — GPT-5.4 说"跑个消融实验"，Claude Code 自动写脚本、rsync 到服务器、screen 启动、收结果、写回论文。只需在 `CLAUDE.md` 里配好服务器信息（[配置指南](#%EF%B8%8F-gpu-服务器配置自动实验用)）
 - 🔀 **灵活模型** — 默认 Claude × GPT-5.4，也支持 [GLM、MiniMax、Kimi、LongCat、DeepSeek 等](#-替代模型组合)——无需 Claude 或 OpenAI API
 - 🛑 **Human-in-the-loop** — 关键决策点可配置检查点。`AUTO_PROCEED=true` 全自动，`false` 逐步审批
 - 📱 **[飞书通知](#-飞书lark-集成可选)** — 三种模式：**关闭（默认，强烈建议大多数用户保持关闭）**、仅推送（webhook，手机收通知）、双向交互（在飞书里审批/回复）。未配置时零影响
@@ -202,6 +202,8 @@ claude
 ### 工作流 2：自动科研循环 🔁（睡一觉醒来看结果）
 
 > "帮我 review 论文，修复问题，循环到通过为止。"
+>
+> GPT-5.4 审稿 → 定位弱点 → 建议实验 → Claude Code 自动写脚本、部署到 GPU、监控结果、改写论文——你睡觉就行。只需在 `CLAUDE.md` 里配好[GPU 服务器信息](#%EF%B8%8F-gpu-服务器配置自动实验用)。
 
 **涉及 Skills：** `auto-review-loop` + `research-review` + `novelty-check` + `run-experiment` + `analyze-results` + `monitor-experiment`
 
